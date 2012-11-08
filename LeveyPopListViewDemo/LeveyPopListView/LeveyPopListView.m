@@ -8,6 +8,7 @@
 
 #import "LeveyPopListView.h"
 #import "LeveyPopListViewCell.h"
+#import "cocos2d.h"
 
 #define POPLISTVIEW_SCREENINSET 40.
 #define POPLISTVIEW_HEADER_HEIGHT 50.
@@ -24,17 +25,20 @@
 #pragma mark - initialization & cleaning up
 - (id)initWithTitle:(NSString *)aTitle options:(NSArray *)aOptions
 {
-    CGRect rect = [[UIScreen mainScreen] applicationFrame];
+    CGRect rect = [[[CCDirector sharedDirector] view] frame];
     if (self = [super initWithFrame:rect])
     {
         self.backgroundColor = [UIColor clearColor];
         _title = [aTitle copy];
         _options = [aOptions copy];
         
+        float width = rect.size.width - 2 * POPLISTVIEW_SCREENINSET;
+        float height = rect.size.height - 2 * POPLISTVIEW_SCREENINSET - POPLISTVIEW_HEADER_HEIGHT - RADIUS;
+        
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(POPLISTVIEW_SCREENINSET, 
-                                                                   POPLISTVIEW_SCREENINSET + POPLISTVIEW_HEADER_HEIGHT, 
-                                                                   rect.size.width - 2 * POPLISTVIEW_SCREENINSET,
-                                                                   rect.size.height - 2 * POPLISTVIEW_SCREENINSET - POPLISTVIEW_HEADER_HEIGHT - RADIUS)];
+                                                                   POPLISTVIEW_SCREENINSET + POPLISTVIEW_HEADER_HEIGHT,
+                                                                   width,
+                                                                   height)];
         _tableView.separatorColor = [UIColor colorWithWhite:0 alpha:.2];
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.dataSource = self;
